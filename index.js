@@ -3,19 +3,23 @@ require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const connectDB = require("./db/config/db")
+const fileUpload = require("express-fileupload");
 const app = express()
 const PORT = process.env.PORT || 6003
 const errorHandler = require("./middlewares/error")
-
+const S3Router = require("./routes/s3Router")
 //Connect DB
 connectDB()
 
 
 app.use(cors())
 app.use(express.json())
+app.use(fileUpload({
+    useTempFiles:true,
+    tempFileDir:"/tmp"
+}));
 
-
-
+app.use("/files",S3Router)
 
 
 app.use(errorHandler)
