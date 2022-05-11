@@ -16,8 +16,6 @@ aws.config.update({
 const s3 = new aws.S3()
 
 
-const getBuckets = ()=> s3.listBuckets().promise()
-
 const uploadFile = (file,next) => {
     const fileStream = fs.createReadStream(file.tempFilePath)
     const uploadParams = {
@@ -43,11 +41,24 @@ const downloadFile = key=>{
 const deleteFile = (key,next)=>{
     const deleteParams = {
         Key:key,
-        ...constantParams
+        Bucket:bucketName
     };
     s3.deleteObject(deleteParams,(error,data)=>{
         next(error,data);
     });
 }
 
-module.exports = {getBuckets,uploadFile,downloadFile,deleteFile}
+const updatedFile = (oldKey,newKey,next)=>{
+    s3.copyObject({
+        Bucket: bucketName, 
+        CopySource: `${bucketName}${oldKey}`, 
+        Key: newKey
+       },(error,data)=>{
+           next(error,data)
+       })
+       
+}
+
+
+
+module.exports = {uploadFile,downloadFile,deleteFile,updatedFile}
