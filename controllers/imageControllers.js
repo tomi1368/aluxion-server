@@ -53,7 +53,6 @@ const externalImageToS3 = async (req, res, next) => {
         .status(httpCodes.OK)
         .json({ error: false, message: "File uploaded successfully" });
     });
-    fs.unlinkSync(imgFile.path)
   } catch (err) {
     next(err);
   }
