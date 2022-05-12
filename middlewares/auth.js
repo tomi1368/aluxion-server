@@ -2,7 +2,7 @@ const ErrorResponse = require("../utils/errorResponse")
 const httpCodes = require("../constants/httpCodes")
 const jwt = require("jsonwebtoken")
 const User = require("../db/models/User")
-const auth = (req,res,next)=>{
+const auth = async (req,res,next)=>{
     let token
     let auth = req.get("Authorization")
     if(auth && auth.startWith("Bearer")) token= auth.split(" ")[1]
