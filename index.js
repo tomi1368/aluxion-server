@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 6003
 const errorHandler = require("./middlewares/error")
 const ImagesRouter = require("./routes/imagesRouter")
 const S3Router = require("./routes/s3Router")
+const AuthRouter = require("./routes/authRouter")
 //Connect DB
 connectDB()
 
@@ -23,7 +24,7 @@ app.use(fileUpload({
 
 app.use("/images",ImagesRouter)
 app.use("/files",S3Router)
-
+app.use("/user",AuthRouter)
 
 app.use(errorHandler)
 
