@@ -50,7 +50,7 @@ const updatedFile = (oldKey, newKey, next) => {
   s3.copyObject(
     {
       Bucket: bucketName,
-      CopySource: `${bucketName}${oldKey}`,
+      CopySource: `${bucketName}/${oldKey}`,
       Key: newKey,
     },
     (error, data) => {
@@ -58,7 +58,6 @@ const updatedFile = (oldKey, newKey, next) => {
     }
   );
 };
-
 const getUrlFile = (key) => {
   const signedUrl = s3.getSignedUrl("getObject", {
     Key: key,
