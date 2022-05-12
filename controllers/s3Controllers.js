@@ -49,7 +49,7 @@ const deleteS3 = (req, res, next) => {
 
 const updateS3 = (req, res, next) => {
   const { newKey, oldKey } = req.body;
-  updatedFile(newKey, oldKey, (error, data) => {
+  updatedFile(oldKey, newKey, (error, data) => {
     if (error) {
       return next(
         new ErrorResponse(
@@ -58,8 +58,7 @@ const updateS3 = (req, res, next) => {
         )
       );
     }
-    req.body.filename = oldKey;
-    deleteS3(req.body.filename, (error, data) => {
+    deleteFile(oldKey, (error, data) => {
       if (error) {
         return next(
           new ErrorResponse(
@@ -68,8 +67,9 @@ const updateS3 = (req, res, next) => {
           )
         );
       }
-      const url = getUrlFile(newKey);
-      return res.status(httpCodes.OK).json({ error: false, newUrl: url });
+      const downloadURL = getUrlFile(newKey);
+      const newURL = downloadURL.split("?")[0]
+      return res.status(httpCodes.OK).json({ error: false, newURL,downloadURL });
     });
   });
 };
