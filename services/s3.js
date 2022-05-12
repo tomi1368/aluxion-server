@@ -22,7 +22,6 @@ const uploadFile = (file, next) => {
     Key: file.name,
   };
   s3.upload(uploadParams, (error, data) => {
-    console.log(data, error);
     next(error, data);
   });
 };
